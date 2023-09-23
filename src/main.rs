@@ -1,4 +1,7 @@
+mod logic;
+
 use libc::ENOENT;
+use logic::char_at;
 use std::time::{Duration, UNIX_EPOCH};
 
 use fuser::{FileAttr, FileType, MountOption};
@@ -72,6 +75,27 @@ impl fuser::Filesystem for FizzBuzzFS {
             2 => reply.attr(&TTL, &FIZZBUZZ_TXT_ATTR),
             _ => reply.error(ENOENT),
         }
+    }
+    fn read(
+        &mut self,
+        _req: &fuser::Request<'_>,
+        ino: u64,
+        _fh: u64,
+        offset: i64,
+        size: u32,
+        _flags: i32,
+        _lock_owner: Option<u64>,
+        reply: fuser::ReplyData,
+    ) {
+        if ino != 2 {
+            reply.error(ENOENT);
+            return;
+        }
+        let mut buf = Vec::new();
+        for i in offset..(offset.saturating_add(size as i64)) {
+            buf.push(char_at(i));
+        }
+        reply.data(&buf)
     }
     fn readdir(
         &mut self,
