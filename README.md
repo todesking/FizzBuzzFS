@@ -47,6 +47,6 @@ FizzBuzz
 ## Run
 
 ```
-docker build -t fizz_buzz_fs .
+docker build -t fizzbuzzfs .
 docker run -it --cap-add SYS_ADMIN --device /dev/fuse fizzbuzzfs
 ```
