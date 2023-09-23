@@ -13,6 +13,7 @@ name = "fizz_buzz_fs"
 version = "0.1.0"
 dependencies = [
  "fuser",
+ "libc",
 ]
 
 [[package]]
